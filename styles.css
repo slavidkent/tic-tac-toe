@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color-dark: black;
+  --color-light: white;
+  --color-gray: rgb(173, 173, 173);
+  --color-text-light: rgb(221, 221, 221);
+}
+.body {
+  font-family: 'Fira Mono', monospace;
+  min-height: 100vh;
+  position: relative;
+}
+/* header */
+.header {
+  min-width: max-content;
+  padding: 0.2rem;
+  color: var(--color-text-light);
+  background-color: var(--color-dark);
+}
+.header > h1 {
+  font-size: 2rem;
+}
+
+/* .main */
+.main {
+  justify-self: flex-start;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.player {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+.player__text > span {
+  display: inline-block;
+  transform: translateY(5px);
+}
+@media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+  }
+  .player {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+.gameboard {
+  min-width: 250px;
+  max-width: 600px;
+  aspect-ratio: 1/1;
+  border-radius: 0.825rem;
+  background-color: black;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.625rem;
+  padding: 0.625rem;
+  margin: 0 auto;
+}
+.gameboard__item {
+  width: 100%;
+  border-radius: 0.2rem;
+  background-color: var(--color-light);
+  cursor: pointer;
+  transition: transform 150ms ease-in-out;
+}
+.gameboard__item:hover {
+  background-color: var(--color-gray);
+}
+.cross {
+  background-image: url(imgs/cross.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.circle {
+  background-image: url(imgs/circle.svg);
+  background-repeat: no-repeat;
+  background-size: 82%;
+  background-position: center center;
+}
+
+/* footer section */
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  min-width: max-content;
+  background-color: var(--color-dark);
+  padding: 0 0.5rem;
+  overflow: hidden;
+}
+.footer__text {
+  color: var(--color-text-light);
+}
+.footer__link {
+  display: inline-block;
+  list-style: none;
+  color: var(--color-text-light);
+  transform: translate(-5px, 5px);
+}
