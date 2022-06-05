@@ -6,17 +6,23 @@ const player = (() => {
     return { name, mark };
   };
   const create = (num, name, mark) => {
-    if (name === '') name = 'unnamed';
+    if (name === '') {
+      name = 'unnamed';
+    } else {
+      name = name.trim();
+    }
     _players[num] = _factory(name, mark);
   };
 
   const getName = (num) => _players[num].name;
   const getMark = (num) => _players[num].mark;
+  const reset = () => (_players.length = 0);
 
   return {
     create,
     getName,
     getMark,
+    reset,
   };
 })();
 
@@ -31,7 +37,6 @@ const dom = (() => {
   const selectAll = (select) => {
     const selectedElements = document.querySelectorAll(select);
     if (selectedElements) {
-      console.log(`${selectedElements.length} has been selected`);
       return selectedElements;
     }
     throw new Error(`${select} can't be selected`);
@@ -46,7 +51,7 @@ const dom = (() => {
 // board logic and state
 // checking game winning condition check board turn error, storing state of games
 const gameBoard = (() => {
-  let _board = [[], [], []];
+  const _board = [[], [], []];
   const _checkBoardEmpty = (r, c) => (_board[r][c] === undefined ? true : false);
 
   const checkWinCondition = (mark) => {
@@ -92,6 +97,7 @@ const gameBoard = (() => {
       ];
       return diagonalArr.some((arr) => arr.every((x) => x === mark));
     };
+
     return checkColumnWin() || checkRowWin() || checkDiagonalWin() ? true : false;
   };
 
@@ -102,18 +108,23 @@ const gameBoard = (() => {
       throw new Error(`position already occupied by ${_board[positionX][positionY]}`);
     }
   };
-
-  const getBoard = (r, c) => _board[r][c];
+  const reset = () => {
+    for (let r = 0; r <= 2; r++) {
+      for (let c = 0; c <= 2; c++) {
+        _board[r][c] = undefined;
+      }
+    }
+  };
 
   return {
     add: addMarkToBoard,
-    get: getBoard,
     isWon: checkWinCondition,
+    reset,
   };
 })();
 
 // dom display
-// control webpage visua display
+// control webpage visual display
 const displayController = (() => {
   const _messageBlock = dom.select('.game-message__text');
   const _overlay = dom.select('.overlay');
@@ -121,6 +132,7 @@ const displayController = (() => {
   const _gamePage = dom.select('.game-page');
   const _gameEndPage = dom.select('.game-end');
   const _playerNameDisplay = dom.selectAll('.player-name-display');
+  const _gameEndMessage = dom.select('.game-end__text');
 
   const showScreen = (screenNumber) => {
     switch (screenNumber) {
@@ -156,43 +168,62 @@ const displayController = (() => {
   const displayMessage = (message, state) => {
     _messageBlock.innerHTML = message;
     _messageBlock.classList.remove(..._messageBlock.classList);
-    _messageBlock.classList.add('game-message__text', state);
+    if (state === '') {
+      _messageBlock.classList.add('game-message__text');
+    } else {
+      _messageBlock.classList.add('game-message__text', state);
+    }
+  };
+  const showEndScreenMessage = (message) => {
+    _gameEndMessage.innerHTML = message;
+  };
+  const reset = () => {
+    showPlayersName('', '');
+    displayMessage('', '');
+    dom.selectAll('.gameboard__item').forEach((item) => item.classList.remove('cross', 'circle'));
   };
   return {
     showScreen,
     showPlayersName,
     showMarkOnPage,
     displayMessage,
+    showEndScreenMessage,
+    reset,
   };
 })();
 
 // game controller
 // control flow of page and game play
 const gameController = (() => {
+  const startButton = dom.select('#start-btn');
+  const inputPlayer1 = dom.select('#player1-name');
+  const inputPlayer2 = dom.select('#player2-name');
+
   const init = () => {
     displayController.showScreen(1);
-    const startButton = dom.select('#start-btn');
+    inputPlayer1.value = '';
+    inputPlayer2.value = '';
     startButton.addEventListener('click', gameStart);
-    startButton.addEventListener('click', () => {
-      startButton.removeEventListener('click', gameStart);
-    });
   };
   const gameStart = () => {
+    startButton.removeEventListener('click', gameStart);
     // create player
-    const player1Name = dom.select('#player1-name').value;
-    const player2Name = dom.select('#player2-name').value;
+    const player1Name = inputPlayer1.value;
+    const player2Name = inputPlayer2.value;
     player.create(0, player1Name, 'x');
     player.create(1, player2Name, 'o');
     displayController.showPlayersName(player.getName(0), player.getName(1));
     displayController.showScreen(2);
-    displayController.displayMessage(`Game Started!!! <br/> Player 1 : ${player.getName(0)}'s Turn`, 'success');
+    displayController.displayMessage(`Game Started!!! <br/> Player 1 ${player.getName(0)}'s Turn`, 'info');
 
     // game
     const gameBoardGrids = dom.selectAll('.gameboard__item');
-    let playerTurn;
+    let playerTurn = 1;
     let currentPlayerMark;
 
     const gridClickEvent = (e) => {
+      displayController.displayMessage(`Player ${playerTurn + 1} ${player.getName(playerTurn)}  turn`, 'info');
+
       //data to determine what to put on board
       if (playerTurn === undefined || playerTurn === 1) {
         playerTurn = 0;
@@ -204,22 +235,34 @@ const gameController = (() => {
       const col = e.target.dataset.col;
       gameBoard.add(currentPlayerMark, row, col);
       displayController.showMarkOnPage(e.target, currentPlayerMark);
-      console.log(gameBoard.isWon(currentPlayerMark));
 
       if (gameBoard.isWon(currentPlayerMark)) {
         gameBoardGrids.forEach((item) => item.removeEventListener('click', gridClickEvent));
-        gameEnd();
+        displayController.displayMessage('Game Over', 'success');
+        setTimeout(gameEnd, 1000, playerTurn);
       }
     };
     gameBoardGrids.forEach((item) => item.addEventListener('click', gridClickEvent));
   };
-  const gameEnd = () => {
+  const gameEnd = (playerNum) => {
+    const restartBtn = dom.select('.reset-btn');
+
     displayController.showScreen(3);
+    displayController.showEndScreenMessage(`player ${playerNum + 1} ${player.getName(playerNum)} WIN !!!`);
+
+    const restartBtnHandler = () => {
+      player.reset();
+      gameBoard.reset();
+      displayController.reset();
+      restartBtn.removeEventListener('click', restartBtnHandler);
+      init();
+    };
+    restartBtn.addEventListener('click', restartBtnHandler);
   };
   return {
     init,
   };
 })();
 
-// run the game when the page load
+// run the page logic when the page load
 gameController.init();

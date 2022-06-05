@@ -81,8 +81,9 @@
   border-radius: 0;
   padding: 0 0.5rem;
 }
-.player-input:focus {
-  outline: none;
+.player-input__input:focus {
+  outline: 2px solid black;
+  outline-offset: 1px;
 }
 .player-input__btn {
   font-size: 1.2rem;
@@ -96,6 +97,10 @@
 }
 .player-input__btn:hover {
   background-color: rgb(226, 226, 226);
+}
+.player-input__btn:focus {
+  outline: 2px solid black;
+  outline-offset: 1px;
 }
 
 .player {
@@ -170,9 +175,39 @@
 .game-message__text.warning {
   color: red;
 }
-.game-message__text.success{
+.game-message__text.success {
   color: green;
-}  
+}
+/* game ending screen */
+.centering-div {
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.game-end {
+  font-size: 2rem;
+  border: 2px solid var(--color-dark);
+  padding: 1rem;
+  width: fit-content;
+}
+.game-end__text {
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.game-end__btn {
+  display: block;
+  width: 100%;
+  border: 2px solid var(--color-dark);
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+  background-color: var(--color-light);
+}
+.game-end__btn:hover {
+  cursor: pointer;
+  background-color: var(--color-gray);
+}
 
 /* footer section */
 .footer {
