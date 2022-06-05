@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic-Tac-Toe</title>
+
     <!-- css -->
     <link rel="stylesheet" href="styles.css" />
     <!-- js -->
@@ -22,43 +23,41 @@
       <div class="overlay">12345</div>
       <div class="player-input">
         <h2 class="player-input__title">Player vs Player</h2>
-        <label class="player-input__label" for="p1">
+        <label class="player-input__label" for="player1-name">
           <p class="player-input__text">Player 1 Name:</p>
-          <input class="player-input__input" id="p1" type="text" />
+          <input class="player-input__input" id="player1-name" type="text" />
         </label>
-        <label class="player-input__label" for="p2">
+        <label class="player-input__label" for="player2-name">
           <p class="player-input__text">Player 2 Name:</p>
-          <input class="player-input__input" id="p2" type="text" />
+          <input class="player-input__input" id="player2-name" type="text" />
         </label>
-        <button class="player-input__btn" type="button">Start</button>
+        <button class="player-input__btn" id="start-btn" type="button">Start</button>
       </div>
-      <div class="game-page hidden">
+      <div class="game-page">
         <div class="player">
           <div class="player__text player-1">
-            player 1:
-            <span>
-              <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
-                />
-              </svg>
-            </span>
+            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+              />
+            </svg>
+            <p>player 1:</p>
+            <span class="player-name-display">ERROR</span>
           </div>
           <div class="player__text player-2">
-            player 2:
-            <span>
-              <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
-                />
-              </svg>
-            </span>
+            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+              />
+            </svg>
+            <p>player 2:</p>
+            <span class="player-name-display">ERROR</span>
           </div>
         </div>
         <div class="gameboard">
-          <div data-row="0" data-col="0" class="gameboard__item cross"></div>
+          <div data-row="0" data-col="0" class="gameboard__item"></div>
           <div data-row="0" data-col="1" class="gameboard__item"></div>
           <div data-row="0" data-col="2" class="gameboard__item"></div>
           <div data-row="1" data-col="0" class="gameboard__item"></div>
@@ -68,8 +67,11 @@
           <div data-row="2" data-col="1" class="gameboard__item"></div>
           <div data-row="2" data-col="2" class="gameboard__item"></div>
         </div>
+        <div class="game-message">
+          <p class="game-message__text info">This is a test</p>
+        </div>
       </div>
-      <div class="game-end hidden">
+      <div class="game-end">
 
       </div>
     </main>

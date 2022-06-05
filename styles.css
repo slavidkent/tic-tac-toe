@@ -59,7 +59,7 @@
   background-color: white;
 }
 
-.player-input__title{
+.player-input__title {
   font-size: 1.5rem;
 }
 .player-input__label {
@@ -67,28 +67,29 @@
   cursor: text;
   display: flex;
   flex-wrap: wrap;
-  margin: 1rem 0;
+  margin: 0.875rem 0;
+  gap: 0.2rem;
 }
 .player-input__text {
   display: inline;
 }
 .player-input__input {
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-family: 'Fira Mono', monospace;
   flex: 1;
   border: 1px solid black;
   border-radius: 0;
-  padding: 0 0.2rem;
-  margin: 0.1rem 0;
+  padding: 0 0.5rem;
 }
 .player-input:focus {
   outline: none;
 }
 .player-input__btn {
+  font-size: 1.2rem;
   display: block;
+  margin-top: 1.5rem;
   width: 100%;
   padding: 0.2rem 0.8rem;
-  font-size: 1.2rem;
   border: 1px solid black;
   background-color: white;
   cursor: pointer;
@@ -96,9 +97,7 @@
 .player-input__btn:hover {
   background-color: rgb(226, 226, 226);
 }
-@media (max-width:600px){
- 
-}
+
 .player {
   display: flex;
   justify-content: center;
@@ -106,10 +105,15 @@
   gap: 2rem;
   margin-bottom: 1rem;
 }
-
-.player__text > span {
-  display: inline-block;
-  transform: translateY(5px);
+.player__text {
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+}
+.player__text > p {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  text-transform: uppercase;
 }
 @media (max-width: 600px) {
   .main {
@@ -154,6 +158,21 @@
   background-size: 82%;
   background-position: center center;
 }
+/* game messages */
+.game-message {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+.game-message__text.info {
+  color: blue;
+}
+.game-message__text.warning {
+  color: red;
+}
+.game-message__text.success{
+  color: green;
+}  
 
 /* footer section */
 .footer {
